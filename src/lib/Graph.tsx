@@ -1,5 +1,5 @@
 import { Graph as X6Graph } from '@antv/x6';
-import { defineComponent, provide, inject, ref, onMounted, Fragment } from 'vue'
+import { defineComponent, provide, inject, ref, onMounted, Fragment, shallowReactive } from 'vue'
 import type { DefineComponent, Ref } from 'vue'
 import { useGraphState } from './hooks'
 
@@ -17,20 +17,20 @@ export const Graph = defineComponent({
   name: 'X6Graph',
   setup(props, { slots, attrs, expose }){
     const { className='react-x6-graph', container } = props
+    const {...other} = attrs
     const containerRef = ref<HTMLElement | undefined>(container)
-    const context = useGraphState({})
+    const context = shallowReactive<{graph: X6Graph | null}>({ graph: null })
     provide(contextSymbol, context)
     expose(context)
     onMounted(() => {
       // options
-      Object.keys(attrs).forEach(key => attrs[key] === "" && (attrs[key] = true) )
-      // console.log('containerRef', containerRef, attrs, props)
+      Object.keys(other).forEach(key => other[key] === "" && (other[key] = true) )
+      // console.log('containerRef', containerRef, other, props)
       if (containerRef.value) {
-        const graph = new X6Graph({
+        context.graph = new X6Graph({
           container: containerRef.value,
-          ...attrs,
+          ...other,
         });
-        context.setGraph(graph)
       }
     })
     return () => {
