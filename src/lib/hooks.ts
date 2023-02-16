@@ -1,18 +1,20 @@
-// @ts-nocheck
-import { watch, ref, onMounted, shallowReactive, markRaw } from 'vue'
+import { Graph, Node, Edge } from '@antv/x6'
+import { watch, shallowRef, onMounted, shallowReactive, markRaw } from 'vue'
 import { diffCells, patch, checkId } from './utils'
 
-export const useGraphState = (initState = {}) => {
-  const { nodes: n, edges: e } = initState;
-  const graph = ref()
+type GraphState = {nodes?: Node.Metadata[], edges?: Edge.Metadata[], g?: Graph}
+
+export const useGraphState = (initState: GraphState = {}) => {
+  const { nodes: n = [], edges: e = [], g } = initState;
+  const graph = shallowRef<Graph | undefined>(g)
   const state = shallowReactive({
-    nodes: markRaw([]),
-    edges: markRaw([]),
+    nodes: markRaw<Node.Metadata[]>(n),
+    edges: markRaw<Edge.Metadata[]>(e),
     graph,
-    setGraph: (g) => g && (graph.value = g),
+    setGraph: (g: Graph) => g && (graph.value = g),
     // state数据之前先检查id是否存在，自动创建id，确保diffCells的时候能使用id进行判断
-    setNodes: (_nodes) => state.nodes = _nodes.map(checkId),
-    setEdges: (_edges) => state.edges = _edges.map(checkId),
+    setNodes: (_nodes: Node.Metadata[]) => state.nodes = _nodes.map(checkId),
+    setEdges: (_edges: Edge.Metadata[]) => state.edges = _edges.map(checkId),
   })
 
   // 先使用diffCells拿到变化数据，再使用patch函数更新数据到x6画布
@@ -23,9 +25,6 @@ export const useGraphState = (initState = {}) => {
     patch(graph.value, nodes)
     patch(graph.value, edges)
   })
-
-
-  onMounted(() => { state.setGraph(initState.g) })
 
   return state
 };
