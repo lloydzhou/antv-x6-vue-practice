@@ -14,11 +14,15 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: './src/lib',
-      name: 'antv-x6-vue-practice',
-      fileName: (format) => `index.${format}.js`,
+      entry: './src/lib/*.ts',
+      fileName: "[name]",
+      formats: ["cjs", "es"]
     },
     rollupOptions: {
+      input: {
+        index: "./src/lib/index.ts",
+        hooks: "./src/lib/hooks.ts",
+      },
       external: ['vue', '@antv/x6'],
       output: {
         globals: {
