@@ -1,12 +1,12 @@
-import { Graph, Node, Edge } from '@antv/x6'
+import type { Graph, Node, Edge } from '@antv/x6'
 import { watch, shallowRef, onMounted, shallowReactive, markRaw } from 'vue'
 import { diffCells, patch, checkId } from './utils'
 
 type GraphState = {nodes?: Node.Metadata[], edges?: Edge.Metadata[], g?: Graph}
 
 export const useGraphState = (initState: GraphState = {}) => {
-  const { nodes: n = [], edges: e = [], g } = initState;
-  const graph = shallowRef<Graph | undefined>(g)
+  const { nodes: n = [], edges: e = [], g = null } = initState;
+  const graph = shallowRef<Graph | null>(g)
   const state = shallowReactive({
     nodes: markRaw<Node.Metadata[]>(n),
     edges: markRaw<Edge.Metadata[]>(e),
