@@ -9,6 +9,7 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import { h, defineComponent, onMounted, ref } from 'vue'
 import { Graph, useGraphInstance, contextSymbol } from './lib'
 

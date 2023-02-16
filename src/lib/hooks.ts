@@ -29,4 +29,3 @@ export const useGraphState = (initState = {}) => {
 
   return state
 };
-export default useGraphState;

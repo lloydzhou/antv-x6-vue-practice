@@ -1,13 +1,11 @@
 {
   "name": "vue-x6-graph",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "files": [
-    "dist/index.js",
-    "dist/index.mjs",
-    "dist/hooks.js",
-    "dist/hooks.mjs"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -27,10 +25,11 @@
   "homepage": "https://github.com/lloydzhou/antv-x6-vue-practice.git",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check build-only",
+    "build": "run-p type-check build-only tsd",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
+    "tsd": "tsc -d --skipLibCheck --emitDeclarationOnly --jsx preserve --esModuleInterop --declarationDir dist src/lib/index.ts",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "peerDependencies": {

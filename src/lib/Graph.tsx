@@ -7,7 +7,6 @@ export const contextSymbol = String(Symbol('x6ContextSymbol'))
 export const useGraphInstance = () => inject(contextSymbol)
 
 interface Props {
-  className?: string;
   container?: Ref<HTMLElement>;
 }
 type Graph = DefineComponent<X6Graph.Options & Props, {[key: string]: any}>
@@ -16,7 +15,7 @@ export const Graph = defineComponent({
   inheritAttrs: false,
   name: 'X6Graph',
   setup(props, { slots, attrs, expose }){
-    const { className='react-x6-graph', container } = props
+    const { container } = props
     const {...other} = attrs
     const containerRef = ref<HTMLElement | undefined>(container)
     const context = shallowReactive<{graph: X6Graph | null}>({ graph: null })
@@ -36,7 +35,6 @@ export const Graph = defineComponent({
     return () => {
       return (
         <div
-          className={className}
           style={{
             width: '100%',
             height: '100%',
