@@ -20,15 +20,31 @@ yarn add vue-x6-graph
 
 ## 在线demo
 
-[vue-x6-graph-demo](https://codesandbox.io/s/antv-x6-vue-graph-demo-6ere13?file=/src/App.js)
 
 ## 设计
-1. 定义画布组件
 
+[参考react版项目](https://github.com/lloydzhou/antv-x6-react-practice#%E8%AE%BE%E8%AE%A1)
 
-2. 使用
+## 使用Graph组件
+
+[示例](https://github.com/lloydzhou/antv-x6-vue-practice/blob/master/src/Graph1.vue#L2)
+
+1. 直接在模板里面使用Graph组件
+2. 子组件内使用useGraphInstance拿到x6的graph对象，可以通过这个对象直接操作画布（增加监听，或者添加节点等）
+
+## 使用hook
+
+[示例](https://github.com/lloydzhou/antv-x6-vue-practice/blob/master/src/Graph.vue#L5)
+
+1. 调用 useGraphState 拿到数据（`nodes`, `edges`, `graph`）,以及更新数据的方法（`setNodes`, `setEdges`, `setGraph`）
+
 ```
+const { nodes, setNodes, edges, setEdges, graph, setGraph } = useGraphState()
 ```
+
+2. 创建x6画布之后调用setGraph设置当前画布
+3. 在某些事件内调用setNodes或者setEdges更新数据
+4. nodes和edges是reactive的，数据变化的时候，内部能自动diff在运行一个内置的patch方法将数据变动更新到画布上面
 
 
 
