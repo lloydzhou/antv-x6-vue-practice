@@ -1,54 +1,6 @@
 // @ts-nocheck
-import { Node, Edge, StringExt, ObjectExt } from '@antv/x6';
 import { watch, ref, onMounted, shallowReactive, markRaw } from 'vue'
-
-const diffCells = (graph, cells = [], type = 'node') => {
-  const create = [];
-  const update = [];
-  const remove = [];
-  if (graph) {
-    const Ctor = type === 'node' ? Node.create : Edge.create;
-    cells.forEach((c) => {
-      const cell = graph.getCellById(c.id);
-      if (cell) {
-        // 这里尝试重新调用一下create，然后通过setProp，直接将新创建的放进去
-        const t = Ctor(c);
-        const prop = t.getProp();
-        t.dispose();
-        if (!ObjectExt.isEqual(cell.getProp(), prop)) {
-          update.push([cell, prop]);
-        }
-      } else {
-        create.push(Ctor(c));
-      }
-    });
-    const cellIds = new Set(cells.map((c) => c.id));
-    const items = type === 'node' ? graph.getNodes() : graph.getEdges();
-    items.forEach((cell) => {
-      if (!cellIds.has(cell.id)) {
-        remove.push(cell.id);
-      }
-    });
-  }
-  return { create, update, remove };
-};
-const patch = (graph, data) => {
-  const { create = [], update = [], remove = [] } = data;
-  // console.log('patch', create, update, remove)
-  if (graph) {
-    graph.batchUpdate('update', () => {
-      graph.addCell(create);
-      update.forEach(([cell, prop]) => {
-        // 直接一次性更新全部的prop可能导致部分属性更新不成功 cell.setProp(prop)
-        Object.keys(prop).forEach((key) => cell.setProp(key, prop[key]));
-      });
-      remove.forEach((item) => graph.removeCell(item));
-    }, data);
-  }
-};
-
-// 如果没有id就添加一个
-const checkId = (metadata) => ({ ...metadata, id: metadata.id || StringExt.uuid() });
+import { diffCells, patch, checkId } from './utils'
 
 export const useGraphState = (initState = {}) => {
   const { nodes: n, edges: e } = initState;
