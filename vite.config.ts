@@ -15,8 +15,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: './src/lib/*.ts',
-      fileName: "[name]",
-      formats: ["cjs", "es"]
+      fileName: (format) => `[name].${format == 'es' ? 'js' : format}`,
+      formats: ["es", "cjs"]
     },
     rollupOptions: {
       input: {
