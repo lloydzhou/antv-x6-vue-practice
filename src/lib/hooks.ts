@@ -1,5 +1,5 @@
 import type { Graph, Node, Edge } from '@antv/x6'
-import { watch, shallowRef, onMounted, shallowReactive, markRaw } from 'vue'
+import { watch, shallowRef, onMounted, shallowReactive } from 'vue'
 import { diffCells, patch, checkId } from './utils'
 
 type GraphState = {nodes?: Node.Metadata[], edges?: Edge.Metadata[], g?: Graph}
