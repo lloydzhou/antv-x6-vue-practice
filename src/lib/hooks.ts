@@ -5,11 +5,11 @@ import { diffCells, patch, checkId } from './utils'
 type GraphState = {nodes?: Node.Metadata[], edges?: Edge.Metadata[], g?: Graph}
 
 export const useGraphState = (initState: GraphState = {}) => {
-  const { nodes: n = [], edges: e = [], g = null } = initState;
+  const { nodes = [], edges = [], g = null } = initState;
   const graph = shallowRef<Graph | null>(g)
   const state = shallowReactive({
-    nodes: markRaw<Node.Metadata[]>(n),
-    edges: markRaw<Edge.Metadata[]>(e),
+    nodes,
+    edges,
     graph,
     setGraph: (g: Graph) => g && (graph.value = g),
     // state数据之前先检查id是否存在，自动创建id，确保diffCells的时候能使用id进行判断
