@@ -3,16 +3,18 @@
 import { onMounted, ref } from 'vue'
 import { Graph, useGraphState } from './lib'
 
-const { nodes, setNodes, edges, setEdges, graph, setGraph } = useGraphState()
+// const { nodes, setNodes, edges, setEdges, graph, setGraph } = useGraphState()
+const state = useGraphState()
 
 // 在onMounted里面使用setGraph
 const gRef = ref()
 
 onMounted(() => {
   console.log('onMounted', gRef)
-  setGraph(gRef.value.graph)
+  state.setGraph(gRef.value.graph)
+  const { graph } = gRef.value
 
-  setNodes([
+  state.setNodes([
     {
       id: 'node1', // String，可选，节点的唯一标识
       x: 40,       // Number，必选，节点位置的 x 值
@@ -32,7 +34,7 @@ onMounted(() => {
       ports: [{ id: 'port1' }],
     },
   ]);
-  setEdges([
+  state.setEdges([
     {
       source: 'node1', // String，必须，起始节点 id
       target: 'node2', // String，必须，目标节点 id
@@ -43,22 +45,43 @@ onMounted(() => {
   const added = cb.bind(null, 'cell:added');
   const removed = cb.bind(null, 'cell:removed');
   const change = cb.bind(null, 'cell:change');
-  graph.value.on('cell:added', added);
-  graph.value.on('cell:removed', removed);
-  graph.value.on('cell:change:*', change);
+  graph.on('cell:added', added);
+  graph.on('cell:removed', removed);
+  graph.on('cell:change:*', change);
   // 移除监听      
   return () => {   
-    graph.value.off('cell:added', added);
-    graph.value.off('cell:removed', removed);
-    graph.value.off('cell:change:*', change);
+    graph.off('cell:added', added);
+    graph.off('cell:removed', removed);
+    graph.off('cell:change:*', change);
   };
 })
 
+let count = 0
+const addNode = () => {
+  // console.log('addNode', state)
+  const target = `node_${++count}`
+  state.setNodes([
+    ...state.nodes,
+    {
+      id: target,
+      label: `label ${++count}`,
+      x: 200 + count * 20,
+      y: 80 + count * 10,
+      width: 80,
+      height: 40
+    }
+  ])
+  state.setEdges([
+    ...state.edges,
+    { source: 'node2', target }
+  ])
+}
 
 </script>
 
 <template>
   <Graph grid snapline keyboard clipboard :width="600" :height="400" ref="gRef">
+    <button @click="addNode">添加节点</button>
     <p>1. 使用useGraphState在组件内部管理数据</p>
     <p>2. 使用setGraph设置画布对象（可自己new一个X6.Graph对象，也可使用vue-x6-graph导出Graph配合ref拿到图对象）</p>
     <p>3. 使用setNodes/setEdges更新数据，自动同步到x6画布</p>

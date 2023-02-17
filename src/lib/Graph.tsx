@@ -1,7 +1,6 @@
 import { Graph as X6Graph } from '@antv/x6';
 import { defineComponent, provide, inject, ref, onMounted, Fragment, shallowReactive } from 'vue'
 import type { DefineComponent, Ref } from 'vue'
-import { useGraphState } from './hooks'
 
 export const contextSymbol = String(Symbol('x6ContextSymbol'))
 export const useGraphInstance = () => inject(contextSymbol)
