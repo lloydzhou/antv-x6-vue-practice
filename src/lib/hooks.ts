@@ -5,7 +5,7 @@ import { diffCells, patch, checkId } from './utils'
 type GraphState = {nodes?: Node.Metadata[], edges?: Edge.Metadata[], graph?: Graph}
 
 export const useGraphState = (initState: GraphState = {}) => {
-  const { nodes = [], edges = [], g: graph = null } = initState;
+  const { nodes = [], edges = [], graph } = initState;
   const state = shallowReactive({
     nodes,
     edges,
