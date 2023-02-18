@@ -3,18 +3,17 @@
 import { onMounted, ref } from 'vue'
 import { Graph, useGraphState } from './lib'
 
-// const { nodes, setNodes, edges, setEdges, graph, setGraph } = useGraphState()
-const state = useGraphState()
+const { nodes, setNodes, edges, setEdges, graph, setGraph } = useGraphState()
 
 // 在onMounted里面使用setGraph
 const gRef = ref()
 
 onMounted(() => {
   console.log('onMounted', gRef)
-  state.setGraph(gRef.value.graph)
+  setGraph(gRef.value.graph)
   const { graph } = gRef.value
 
-  state.setNodes([
+  setNodes([
     {
       id: 'node1', // String，可选，节点的唯一标识
       x: 40,       // Number，必选，节点位置的 x 值
@@ -34,7 +33,7 @@ onMounted(() => {
       ports: [{ id: 'port1' }],
     },
   ]);
-  state.setEdges([
+  setEdges([
     {
       source: 'node1', // String，必须，起始节点 id
       target: 'node2', // String，必须，目标节点 id
@@ -58,10 +57,9 @@ onMounted(() => {
 
 let count = 0
 const addNode = () => {
-  // console.log('addNode', state)
   const target = `node_${++count}`
-  state.setNodes([
-    ...state.nodes,
+  setNodes([
+    ...nodes.value,
     {
       id: target,
       label: `label ${++count}`,
@@ -71,8 +69,8 @@ const addNode = () => {
       height: 40
     }
   ])
-  state.setEdges([
-    ...state.edges,
+  setEdges([
+    ...edges.value,
     { source: 'node2', target }
   ])
 }
