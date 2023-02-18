@@ -41,11 +41,16 @@ yarn add vue-x6-graph
 
 ```
 const { nodes, setNodes, edges, setEdges, graph, setGraph } = useGraphState()
+
+console.log('nodes:', nodes.value)
+console.log('edges:', edges.value)
+console.log('graph:', graph.value)
+
 ```
 
 2. 创建x6画布之后调用setGraph设置当前画布
 3. 在某些事件内调用setNodes或者setEdges更新数据
-4. nodes和edges是reactive的，数据变化的时候，内部能自动diff在运行一个内置的patch方法将数据变动更新到画布上面
+4. nodes和edges是ref，数据变化的时候，内部能自动diff在运行一个内置的patch方法将数据变动更新到画布上面
 
 
 
