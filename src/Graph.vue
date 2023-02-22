@@ -68,11 +68,15 @@ const addNode = () => {
       width: 80,
       height: 40
     }
-  ])
+  ]).then(() => {
+    console.log('addNode success')
+  })
   setEdges([
     ...edges.value,
     { source: 'node2', target }
-  ])
+  ]).then(() => {
+    console.log('addEdge success')
+  })
 }
 
 </script>
