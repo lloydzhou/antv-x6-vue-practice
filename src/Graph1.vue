@@ -19,12 +19,13 @@ const EventBehavior = defineComponent({
   setup() {
     const { graph } = useGraphInstance()
 
+    const cb = (name: string, args: any) => console.log(name, args);
+    const added = cb.bind(null, 'cell:added');
+    const removed = cb.bind(null, 'cell:removed');
+    const change = cb.bind(null, 'cell:change');
+
     onMounted(() => {
       console.log('onMounted', graph)
-      const cb = (name: string, args: any) => console.log(name, args);
-      const added = cb.bind(null, 'cell:added');
-      const removed = cb.bind(null, 'cell:removed');
-      const change = cb.bind(null, 'cell:change');
       graph.on('cell:added', added);
       graph.on('cell:removed', removed);
       graph.on('cell:change:*', change);
