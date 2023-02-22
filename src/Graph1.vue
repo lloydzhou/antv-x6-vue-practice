@@ -28,12 +28,12 @@ const EventBehavior = defineComponent({
       graph.on('cell:added', added);
       graph.on('cell:removed', removed);
       graph.on('cell:change:*', change);
+    })
+    onUnmounted(() => {
       // 移除监听      
-      return () => {   
-        graph.off('cell:added', added);
-        graph.off('cell:removed', removed);
-        graph.off('cell:change:*', change);
-      };
+      graph.off('cell:added', added);
+      graph.off('cell:removed', removed);
+      graph.off('cell:change:*', change);
     })
 
     return () => null
