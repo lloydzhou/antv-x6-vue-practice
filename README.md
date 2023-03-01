@@ -16,6 +16,10 @@
 ```
 npm install vue-x6-graph
 yarn add vue-x6-graph
+
+// only using hooks
+npm install x6-hooks
+import { useGraphState } from 'x6-hooks/vue'
 ```
 
 ## 在线demo
